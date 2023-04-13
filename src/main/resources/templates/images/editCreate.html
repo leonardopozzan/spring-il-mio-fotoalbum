@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/header :: myhead}"></div>
+</head>
+<body>
+
+<div class="d-flex">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <main id="main-container" class="w-100 position-relative" th:with="edit = ${image.id} != null">
+        <div class="d-flex justify-content-center flex-wrap">
+            <h1 class="text-center mt-5"><span th:text="${edit} ? 'Modifica' : 'Crea' "></span> la tua foto</h1>
+            <div class="w-75" th:with="formAction=${edit ? '/images/edit/' + image.id : '/images/create'}">
+                <form th:object="${image}" th:action="@{${formAction}}" method="post">
+                    <div>
+                        <label class="form-label" for="title">Titolo:</label>
+                        <input  type="text" class="form-control" id="title" th:field="*{title}" th:errorClass="is-invalid">
+                        <ul class="invalid-feedback" th:if="${#fields.hasErrors('title')}">
+                            <li th:each="errorMessage : ${#fields.errors('title')}" th:text="${errorMessage}"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <label class="form-label" for="url">Url:</label>
+                        <input  type="text" class="form-control" id="url" th:field="*{url}" th:errorClass="is-invalid">
+                        <ul class="invalid-feedback" th:if="${#fields.hasErrors('url')}">
+                            <li th:each="errorMessage : ${#fields.errors('url')}" th:text="${errorMessage}"></li>
+                        </ul>
+                    </div>
+                    <div class="my-2">
+                        <label>Visibile:</label>
+                        <input  type="radio" class="form-check-input" th:field="*{visible}" value="1" th:errorClass="is-invalid">
+                        <label class="form-check-label">Si</label>
+                        <input  type="radio" class="form-check-input" th:field="*{visible}" value="0" th:errorClass="is-invalid">
+                        <label class="form-check-label">No</label>
+                        <ul class="invalid-feedback" th:if="${#fields.hasErrors('visible')}">
+                            <li th:each="errorMessage : ${#fields.errors('visible')}" th:text="${errorMessage}"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <label class="form-label">Categorie: </label>
+                        <div th:classAppend=" ${#fields.hasErrors('categories')} ? 'is-invalid' : ''" class="row">
+                            <div th:each="category : ${categories}" class="col-4">
+                                <input  type="checkbox" class="form-check-input" th:field="*{categories}" th:value="${category.id}" th:errorClass="is-invalid">
+                                <label class="form-check-label text-capitalize" th:text="${category.name}"></label>
+                            </div>
+                        </div>
+                        <ul class="invalid-feedback" th:if="${#fields.hasErrors('categories')}">
+                            <li th:each="errorMessage : ${#fields.errors('categories')}" th:text="${errorMessage}"></li>
+                        </ul>
+                    </div>
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary"><span th:text="${edit} ? 'Aggiorna' : 'Crea' "></span></button>
+                        <button type="reset" class="btn btn-danger">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>

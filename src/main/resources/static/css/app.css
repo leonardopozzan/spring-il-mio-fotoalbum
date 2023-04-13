@@ -27,7 +27,7 @@ img{
     min-width: 250px;
     min-height: 100vh;
     background-color:  var(--dark-blue);
-    padding: 1rem;
+    padding: 0 1rem;
     position: relative;
     }
 .side-bar ul .title{

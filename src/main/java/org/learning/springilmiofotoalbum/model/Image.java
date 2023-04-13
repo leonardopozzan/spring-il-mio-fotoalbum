@@ -36,6 +36,17 @@ public class Image {
     )
     private List<Category> categories;
 
+    public Image(Image image) {
+        this.title = image.title;
+        this.description = image.description;
+        this.url = image.url;
+        this.visible = image.visible;
+    }
+
+    public Image(){
+        super();
+    }
+
     public Integer getId() {
         return id;
     }

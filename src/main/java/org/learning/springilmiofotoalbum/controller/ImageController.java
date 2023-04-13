@@ -1,16 +1,17 @@
 package org.learning.springilmiofotoalbum.controller;
 
+import jakarta.validation.Valid;
 import org.learning.springilmiofotoalbum.exception.ImageNotFoundException;
+import org.learning.springilmiofotoalbum.model.Category;
 import org.learning.springilmiofotoalbum.model.Image;
+import org.learning.springilmiofotoalbum.service.CategoryService;
 import org.learning.springilmiofotoalbum.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ import java.util.Optional;
 public class ImageController {
     @Autowired
     ImageService imageService;
+
+    @Autowired
+    CategoryService categoryService;
 
     @GetMapping
     public String index(Model model, @RequestParam(name = "title") Optional<String> keyword){
@@ -45,5 +49,22 @@ public class ImageController {
         } catch (ImageNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + id + " non è stata trovata");
         }
+    }
+
+    @GetMapping("/create")
+    public String create(Model model){
+        model.addAttribute("image", new Image());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "images/editCreate";
+    }
+
+    @PostMapping("create")
+    public String doCreate(Model model, @Valid @ModelAttribute("image") Image formImage, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "images/editCreate";
+        }
+        Image newImage = imageService.createImage(formImage);
+        return "redirect:/images/" + Integer.toString(newImage.getId());
     }
 }
