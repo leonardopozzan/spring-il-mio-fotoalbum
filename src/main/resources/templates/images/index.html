@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/header :: myhead}"></div>
+</head>
+<body>
+
+<div class="d-flex">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <main id="main-container" class="w-100 position-relative">
+
+        <h1 class="text-center my-4">Foto</h1>
+
+        <div class="d-flex justify-content-center my-4">
+            <form action="/images" method="get" class="d-flex w-25">
+                <input type="text" name="title" th:value="${keyword}" class="form-control me-3">
+                <button type="submit" class="btn btn-primary">Filtra</button>
+            </form>
+        </div>
+        <div class="d-flex justify-content-center flex-wrap align-items-start">
+            <th:block th:if="${message}">
+                <div class="col-7 mb-2 alert alert-dismissible fade show" th:classAppend="${#strings.equals(message.type, 'SUCCESS')} ? alert-success : alert-danger">
+                    <div th:text="${message.text}"></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </th:block>
+            <div class="col-7 mb-2">
+                <a th:href="@{/images/create}" class="btn btn-danger"><i class="fa-solid fa-plus"></i></a>
+            </div>
+            <table th:if="${images.size > 0}" class="col-7">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Titolo</th>
+                    <th>Anteprima</th>
+                    <th>Visibile</th>
+                    <th>Operazioni</th>
+                </tr>
+                </thead>
+                <tbody th:each="image : ${images}" th:object="${image}" >
+                <tr>
+                    <th th:text="*{id}"></th>
+                    <td th:text="*{title}"></td>
+                    <td><img class="w-75" th:src="@{*{url}}" alt=""></td>
+                    <td th:text="*{visible} ? 'si' : 'no'" ></td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-warning me-3" th:href="@{|/images/*{id}|}" ><i class="fa-solid fa-eye"></i></a>
+                            <a class="btn btn-primary me-3" th:href="@{|/images/edit/*{id}|}" ><i class="fa-solid fa-pencil"></i></a>
+                            <a class="btn btn-danger" th:href="@{|/images/delete/*{id}|}" ><i class="fa-solid fa-trash-can"></i></a>
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <h4 th:unless="${images.size > 0}" class="text-danger col-7" > Non ci sono foto!</h4>
+        </div>
+
+    </main>
+</div>
+
+
+</body>
+</html>
