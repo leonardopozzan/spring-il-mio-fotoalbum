@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/header :: myhead}"></div>
+</head>
+<body>
+
+<div class="d-flex">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <main id="main-container" class="w-100 position-relative" th:object="${image}">
+        <div class="d-flex justify-content-center flex-wrap align-items-start mt-5">
+
+            <div class="d-flex col-9">
+                <div class="col-6 me-3">
+                    <img th:src="@{*{url}}" alt="">
+                </div>
+                <div class="col-6">
+                    <h2 class="text-capitalize" th:text="*{title}"></h2>
+                    <dl>
+                        <dt>Visibile:</dt>
+                        <dd th:text="*{visible} ? 'Si' : 'No'"></dd>
+                        <th:block th:unless="${#strings.isEmpty(image.description)}">
+                            <dt>Descrizione:</dt>
+                            <dd th:text="*{description}"></dd>
+                        </th:block>
+                    </dl>
+                </div>
+            </div>
+            <div class="col-9 my-3 d-flex align-items-center">
+                <a th:href="@{/}" class="btn btn-danger me-3"><i class="fa-solid fa-plus"></i></a>
+                <h4>Categorie:</h4>
+            </div>
+            <table class="col-9 mx-3">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Operazioni</th>
+                </tr>
+                </thead>
+                <tbody th:each="category : ${image.categories}" th:object="${category}" >
+                <tr>
+                    <th th:text="*{id}"></th>
+                    <td th:text="*{name}"></td>
+                    <td>
+                        <div class="d-flex">
+                            <a class="btn btn-primary me-3" th:href="@{|/categories/edit/*{id}|}" ><i class="fa-solid fa-pencil"></i></a>
+                            <a class="btn btn-danger" th:href="@{|/categories/delete/*{id}|}" ><i class="fa-solid fa-trash-can"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>

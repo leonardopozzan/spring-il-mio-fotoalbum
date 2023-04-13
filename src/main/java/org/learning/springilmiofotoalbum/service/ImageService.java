@@ -1,5 +1,7 @@
 package org.learning.springilmiofotoalbum.service;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import org.learning.springilmiofotoalbum.exception.ImageNotFoundException;
 import org.learning.springilmiofotoalbum.model.Image;
 import org.learning.springilmiofotoalbum.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +20,9 @@ public class ImageService {
 
     public List<Image> getFilteredImages(String keyword) {
         return imageRepository.findByTitleContainingIgnoreCase(keyword);
+    }
+
+    public Image getById(Integer id){
+        return imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
     }
 }

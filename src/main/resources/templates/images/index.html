@@ -24,15 +24,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </th:block>
-            <div class="col-7 mb-2">
+            <div class="col-9 mb-2">
                 <a th:href="@{/images/create}" class="btn btn-danger"><i class="fa-solid fa-plus"></i></a>
             </div>
-            <table th:if="${images.size > 0}" class="col-7">
+            <table th:if="${images.size > 0}" class="col-9">
                 <thead>
                 <tr>
                     <th>#</th>
                     <th>Titolo</th>
                     <th>Anteprima</th>
+                    <th>Categorie</th>
                     <th>Visibile</th>
                     <th>Operazioni</th>
                 </tr>
@@ -42,6 +43,7 @@
                     <th th:text="*{id}"></th>
                     <td th:text="*{title}"></td>
                     <td><img class="w-75" th:src="@{*{url}}" alt=""></td>
+                    <td><div th:each="category : ${image.categories}" ><span th:text="${category.name}"></span></div></td>
                     <td th:text="*{visible} ? 'si' : 'no'" ></td>
                     <td>
                         <div class="d-flex justify-content-center">
@@ -54,7 +56,7 @@
                 </tr>
                 </tbody>
             </table>
-            <h4 th:unless="${images.size > 0}" class="text-danger col-7" > Non ci sono foto!</h4>
+            <h4 th:unless="${images.size > 0}" class="text-danger col-9" > Non ci sono foto!</h4>
         </div>
 
     </main>
