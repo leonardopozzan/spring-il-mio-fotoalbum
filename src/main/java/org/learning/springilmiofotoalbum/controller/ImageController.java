@@ -51,7 +51,7 @@ public class ImageController {
             model.addAttribute("image" , image);
             return "images/show";
         } catch (ImageNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + id + " non è stata trovata");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + id + " non trovata");
         }
     }
 
@@ -91,7 +91,7 @@ public class ImageController {
             model.addAttribute("categories", categoryService.getAllCategories());
             return "images/editCreate";
         } catch (ImageNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + id + " non è stata trovata");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + id + " non trovata");
         }
     }
 

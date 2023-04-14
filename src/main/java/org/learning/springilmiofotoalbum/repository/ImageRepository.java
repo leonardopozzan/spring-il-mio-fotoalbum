@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ImageRepository extends JpaRepository<Image, Integer> {
-    public List<Image> findByTitleContainingIgnoreCase(String title);
+    List<Image> findByTitleContainingIgnoreCase(String title);
+    boolean existsByTitleAndIdNot(String name, Integer id);
 
-    public boolean existsByTitleAndIdNot(String name, Integer id);
+    boolean existsByTitle(String title);
 }

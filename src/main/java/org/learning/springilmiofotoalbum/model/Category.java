@@ -3,7 +3,10 @@ package org.learning.springilmiofotoalbum.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import javax.swing.*;
 import java.util.List;
 @Entity
 @Table(name= "categories")
@@ -13,13 +16,14 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
+    @NotBlank(message = "il nome non può essere vuoto o contenere solo spazi")
     @Size(min = 3,  message = "il nome deve avere almeno 3 caratteri")
     @Size(max = 50, message = "il nome non può superare i 50 caratteri")
     @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "categories")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Image> images;
 
     public Integer getId() {

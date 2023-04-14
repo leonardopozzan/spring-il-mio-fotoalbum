@@ -50,6 +50,9 @@ public class ImageService {
     }
 
     public boolean isValidTitle(Image formImage){
+        if(formImage.getId() == null){
+            return !imageRepository.existsByTitle(formImage.getTitle());
+        }
         return !imageRepository.existsByTitleAndIdNot(formImage.getTitle(), formImage.getId());
     }
 
