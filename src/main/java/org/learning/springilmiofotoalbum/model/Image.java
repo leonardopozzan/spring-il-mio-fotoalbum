@@ -13,17 +13,17 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
+    @NotBlank(message = "il titolo non può essere vuoto o contenere solo spazi")
     @Size(min = 3,  message = "il titolo deve avere almeno 3 caratteri")
     @Size(max = 50, message = "il titolo non può superare i 50 caratteri")
     @Column(nullable = false, unique = true)
     private String title;
     @Lob
     private String description;
-    @NotBlank
+    @NotBlank(message = "url non può essere vuoto o contenere solo spazi")
     @Column(nullable = false)
     private String url;
-    @NotNull
+    @NotNull(message = "devi selezionare la visibilità")
     @Column(nullable = false)
     private Boolean visible;
 

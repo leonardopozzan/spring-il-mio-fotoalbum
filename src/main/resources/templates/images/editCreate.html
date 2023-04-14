@@ -9,8 +9,8 @@
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
     <main id="main-container" class="w-100 position-relative" th:with="edit = ${image.id} != null">
         <div class="d-flex justify-content-center flex-wrap">
-            <h1 class="text-center mt-5"><span th:text="${edit} ? 'Modifica' : 'Crea' "></span> la tua foto</h1>
-            <div class="w-75" th:with="formAction=${edit ? '/images/edit/' + image.id : '/images/create'}">
+            <h1 class="text-center mt-5 col-9"><span th:text="${edit} ? 'Modifica' : 'Crea' "></span> la tua foto</h1>
+            <div class="col-9" th:with="formAction=${edit ? '/images/edit/' + image.id : '/images/create'}">
                 <form th:object="${image}" th:action="@{${formAction}}" method="post">
                     <div>
                         <label class="form-label" for="title">Titolo:</label>

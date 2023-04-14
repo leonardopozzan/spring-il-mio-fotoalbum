@@ -10,10 +10,10 @@ import org.learning.springilmiofotoalbum.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.*;
 
 @Service
 public class ImageService {
@@ -31,7 +31,7 @@ public class ImageService {
         return imageRepository.findByTitleContainingIgnoreCase(keyword);
     }
 
-    public Image getById(Integer id){
+    public Image getById(Integer id) throws ImageNotFoundException{
         return imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
     }
 
@@ -41,11 +41,24 @@ public class ImageService {
         return imageRepository.save(newImage);
     }
 
-    public List<Category> getCategoriesFromImage(Image image){
+    private List<Category> getCategoriesFromImage(Image image) throws CategoryNotFoundException{
         Set<Category> categoriesFromImage = new HashSet<>();
         for (Category category : image.getCategories()){
             categoriesFromImage.add(categoryRepository.findById(category.getId()).orElseThrow(CategoryNotFoundException::new));
         }
         return new ArrayList<>(categoriesFromImage);
+    }
+
+    public boolean isValidTitle(Image formImage){
+        return !imageRepository.existsByTitleAndIdNot(formImage.getTitle(), formImage.getId());
+    }
+
+    public boolean isValidURL(String url)  {
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (MalformedURLException | URISyntaxException e) {
+            return false;
+        }
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -60,6 +61,12 @@ public class ImageController {
 
     @PostMapping("create")
     public String doCreate(Model model, @Valid @ModelAttribute("image") Image formImage, BindingResult bindingResult){
+        if (!imageService.isValidTitle(formImage))
+            bindingResult.addError(new FieldError("image", "title", formImage.getTitle(), false, null, null, "il titolo deve essere unico"));
+
+        if (!imageService.isValidURL(formImage.getUrl()))
+            bindingResult.addError(new FieldError("image", "url", formImage.getUrl(), false, null, null, "devi inserire un url valido"));
+
         if(bindingResult.hasErrors()){
             model.addAttribute("categories", categoryService.getAllCategories());
             return "images/editCreate";
@@ -67,4 +74,6 @@ public class ImageController {
         Image newImage = imageService.createImage(formImage);
         return "redirect:/images/" + Integer.toString(newImage.getId());
     }
+
+
 }
