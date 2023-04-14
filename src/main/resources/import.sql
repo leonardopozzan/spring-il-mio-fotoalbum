@@ -46,3 +46,8 @@ INSERT INTO album.category_image(image_id, category_id)VALUES(10, 5);
 INSERT INTO album.category_image(image_id, category_id)VALUES(11, 5);
 INSERT INTO album.category_image(image_id, category_id)VALUES(12, 5);
 
+INSERT INTO users (email, first_name, last_name, password) VALUES('admin@gmail.com', 'admin', 'admin', '{noop}admin');
+
+INSERT INTO roles (id, name) VALUES(1, 'ADMIN');
+
+INSERT into users_roles(user_id, roles_id) VALUES(1, 1);

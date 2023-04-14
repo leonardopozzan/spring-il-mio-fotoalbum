@@ -8,6 +8,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.Objects;
+
 @Entity
 @Table(name= "categories")
 public class Category {
@@ -48,5 +50,18 @@ public class Category {
 
     public void setImages(List<Image> images) {
         this.images = images;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(getId(), category.getId()) && Objects.equals(getName(), category.getName()) && Objects.equals(getImages(), category.getImages());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getImages());
     }
 }
