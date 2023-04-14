@@ -1,5 +1,6 @@
 package org.learning.springilmiofotoalbum.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -23,7 +24,7 @@ public class Category {
     @Size(max = 50, message = "il nome non può superare i 50 caratteri")
     @Column(nullable = false, unique = true)
     private String name;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Image> images;
