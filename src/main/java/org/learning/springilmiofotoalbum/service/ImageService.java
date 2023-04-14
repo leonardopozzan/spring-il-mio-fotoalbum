@@ -68,4 +68,14 @@ public class ImageService {
         imageToUpdate.setCategories(getCategoriesFromImage(formImage));
         return imageRepository.save(imageToUpdate);
     }
+
+    public boolean deleteImage(Integer id) throws ImageNotFoundException{
+        imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
+        try{
+            imageRepository.deleteById(id);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
 }

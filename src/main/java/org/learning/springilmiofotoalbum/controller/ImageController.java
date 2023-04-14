@@ -3,7 +3,8 @@ package org.learning.springilmiofotoalbum.controller;
 import jakarta.validation.Valid;
 import org.learning.springilmiofotoalbum.exception.CategoryNotFoundException;
 import org.learning.springilmiofotoalbum.exception.ImageNotFoundException;
-import org.learning.springilmiofotoalbum.model.Category;
+import org.learning.springilmiofotoalbum.model.AlertMessage;
+import org.learning.springilmiofotoalbum.model.AlertMessage.AlertMessageType;
 import org.learning.springilmiofotoalbum.model.Image;
 import org.learning.springilmiofotoalbum.service.CategoryService;
 import org.learning.springilmiofotoalbum.service.ImageService;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,5 +118,24 @@ public class ImageController {
         }
 
         return "redirect:/images/" + Integer.toString(updatedImage.getId());
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(Model model, @PathVariable Integer id, RedirectAttributes redirectAttributes ){
+        try{
+            boolean success = imageService.deleteImage(id);
+            if (success) {
+                AlertMessage alertMessage = new AlertMessage(AlertMessageType.SUCCESS, "immagine con id " + id + " eliminata con succeso");
+                redirectAttributes.addFlashAttribute("message", alertMessage);
+
+            } else {
+                AlertMessage alertMessage = new AlertMessage(AlertMessageType.ERROR, "Impossibile eliminare la immagine con id " + id);
+                redirectAttributes.addFlashAttribute("message", alertMessage);
+            }
+        }catch (ImageNotFoundException e){
+            AlertMessage alertMessage = new AlertMessage(AlertMessageType.ERROR, "immagine con id " + id + " non trovata");
+            redirectAttributes.addFlashAttribute("message", alertMessage);
+        }
+        return "redirect:/images";
     }
 }

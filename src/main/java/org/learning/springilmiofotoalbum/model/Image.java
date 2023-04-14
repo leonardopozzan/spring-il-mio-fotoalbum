@@ -28,7 +28,7 @@ public class Image {
     private Boolean visible;
 
     @NotEmpty(message = "devi selezionare almenon una categoria")
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(
             name = "category_image",
             joinColumns = @JoinColumn(name = "image_id"),
