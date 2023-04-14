@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @GetMapping
     public String index(Model model){

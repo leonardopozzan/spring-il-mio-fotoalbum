@@ -26,10 +26,10 @@ import java.util.Optional;
 @RequestMapping("/images")
 public class ImageController {
     @Autowired
-    ImageService imageService;
+    private ImageService imageService;
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @GetMapping
     public String index(Model model, @RequestParam(name = "title") Optional<String> keyword){
