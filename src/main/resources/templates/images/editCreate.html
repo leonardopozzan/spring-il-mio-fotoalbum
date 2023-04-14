@@ -48,6 +48,13 @@
                             <li th:each="errorMessage : ${#fields.errors('categories')}" th:text="${errorMessage}"></li>
                         </ul>
                     </div>
+                    <div>
+                        <label class="form-label" for="description">Descrizione:</label>
+                        <textarea  type="text" class="form-control" rows="3" id="description" th:field="*{description}" th:errorClass="is-invalid"></textarea>
+                        <ul class="invalid-feedback" th:if="${#fields.hasErrors('description')}">
+                            <li th:each="errorMessage : ${#fields.errors('description')}" th:text="${errorMessage}"></li>
+                        </ul>
+                    </div>
                     <div class="mt-2">
                         <button type="submit" class="btn btn-primary"><span th:text="${edit} ? 'Aggiorna' : 'Crea' "></span></button>
                         <button type="reset" class="btn btn-danger">Reset</button>

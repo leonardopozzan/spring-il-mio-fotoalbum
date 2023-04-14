@@ -1,6 +1,8 @@
 package org.learning.springilmiofotoalbum.exception;
 
-public class CategoryNotFoundException extends RuntimeException{
+import java.util.function.Supplier;
+
+public class CategoryNotFoundException extends RuntimeException {
     public CategoryNotFoundException(){
         super();
     }

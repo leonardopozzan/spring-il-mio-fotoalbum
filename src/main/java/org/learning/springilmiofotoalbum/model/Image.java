@@ -36,15 +36,20 @@ public class Image {
     )
     private List<Category> categories;
 
+    public Image(){
+        super();
+    }
     public Image(Image image) {
         this.title = image.title;
         this.description = image.description;
         this.url = image.url;
         this.visible = image.visible;
     }
-
-    public Image(){
-        super();
+    public void copyFrom(Image image) {
+        this.title = image.title;
+        this.description = image.description;
+        this.url = image.url;
+        this.visible = image.visible;
     }
 
     public Integer getId() {
@@ -94,4 +99,6 @@ public class Image {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+
+
 }

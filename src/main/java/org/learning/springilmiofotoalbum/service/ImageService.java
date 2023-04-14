@@ -35,7 +35,7 @@ public class ImageService {
         return imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
     }
 
-    public Image createImage(Image formImage) {
+    public Image createImage(Image formImage) throws CategoryNotFoundException {
         Image newImage = new Image(formImage);
         newImage.setCategories(getCategoriesFromImage(formImage));
         return imageRepository.save(newImage);
@@ -44,7 +44,7 @@ public class ImageService {
     private List<Category> getCategoriesFromImage(Image image) throws CategoryNotFoundException{
         Set<Category> categoriesFromImage = new HashSet<>();
         for (Category category : image.getCategories()){
-            categoriesFromImage.add(categoryRepository.findById(category.getId()).orElseThrow(CategoryNotFoundException::new));
+            categoriesFromImage.add(categoryRepository.findById(category.getId()).orElseThrow( ()-> new CategoryNotFoundException(category.getName())));
         }
         return new ArrayList<>(categoriesFromImage);
     }
@@ -60,5 +60,12 @@ public class ImageService {
         } catch (MalformedURLException | URISyntaxException e) {
             return false;
         }
+    }
+
+    public Image updateImage(Image formImage, Integer id) throws ImageNotFoundException, CategoryNotFoundException {
+        Image imageToUpdate = imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
+        imageToUpdate.copyFrom(formImage);
+        imageToUpdate.setCategories(getCategoriesFromImage(formImage));
+        return imageRepository.save(imageToUpdate);
     }
 }

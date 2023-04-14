@@ -1,6 +1,7 @@
 package org.learning.springilmiofotoalbum.controller;
 
 import jakarta.validation.Valid;
+import org.learning.springilmiofotoalbum.exception.CategoryNotFoundException;
 import org.learning.springilmiofotoalbum.exception.ImageNotFoundException;
 import org.learning.springilmiofotoalbum.model.Category;
 import org.learning.springilmiofotoalbum.model.Image;
@@ -71,9 +72,49 @@ public class ImageController {
             model.addAttribute("categories", categoryService.getAllCategories());
             return "images/editCreate";
         }
-        Image newImage = imageService.createImage(formImage);
+        Image newImage = new Image();
+        try{
+            newImage = imageService.createImage(formImage);
+        } catch (CategoryNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la categoria: "+ e.getMessage() + " non è stata trovata");
+        }
         return "redirect:/images/" + Integer.toString(newImage.getId());
     }
 
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable Integer id){
+        try {
+            Image image = imageService.getById(id);
+            model.addAttribute("image" , image);
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "images/editCreate";
+        } catch (ImageNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + id + " non è stata trovata");
+        }
+    }
 
+    @PostMapping("/edit/{id}")
+    public String doEdit(Model model, @Valid @ModelAttribute("image") Image formImage, BindingResult bindingResult, @PathVariable Integer id){
+        if (!imageService.isValidTitle(formImage))
+            bindingResult.addError(new FieldError("image", "title", formImage.getTitle(), false, null, null, "il titolo deve essere unico"));
+
+        if (!imageService.isValidURL(formImage.getUrl()))
+            bindingResult.addError(new FieldError("image", "url", formImage.getUrl(), false, null, null, "devi inserire un url valido"));
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "images/editCreate";
+        }
+
+        Image updatedImage = new Image();
+        try {
+            updatedImage = imageService.updateImage(formImage, id);
+        } catch (ImageNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + id + " non è stata trovata");
+        }catch (CategoryNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la categoria: "+ e.getMessage() + " non è stata trovata");
+        }
+
+        return "redirect:/images/" + Integer.toString(updatedImage.getId());
+    }
 }
