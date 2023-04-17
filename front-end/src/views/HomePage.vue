@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import {store} from '../store';
-import axios from 'axios';
+    import {store} from '../store';
+    import axios from 'axios';
     export default {
         data(){
             return{

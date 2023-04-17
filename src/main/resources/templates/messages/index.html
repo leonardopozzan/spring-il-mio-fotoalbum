@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/header :: myhead}"></div>
+</head>
+<body>
+
+<div class="d-flex">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <main id="main-container" class="w-100 position-relative">
+
+        <div class="d-flex align-items-start justify-content-center mt-5 flex-wrap">
+            <h1 class="mb-3 col-6 text-center">Messaggi</h1>
+            <table th:if="${messages.size > 0}" class="col-9" >
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Email</th>
+                    <th>Messaggio</th>
+                </tr>
+                </thead>
+                <tbody th:each="element : ${messages}" th:object="${element}" >
+                <tr>
+                    <th th:text="*{id}"></th>
+                    <td th:text="*{email}"></td>
+                    <td th:text="*{text}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <h4 th:unless="${messages.size > 0}" class="text-danger col-9" > Non ci sono messaggi!</h4>
+
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>

@@ -51,3 +51,10 @@ INSERT INTO users (email, first_name, last_name, password) VALUES('admin@gmail.c
 INSERT INTO roles (id, name) VALUES(1, 'ADMIN');
 
 INSERT into users_roles(user_id, roles_id) VALUES(1, 1);
+
+
+INSERT INTO album.messages(email, `text`)VALUES('leo@gmail.com', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore eum beatae dicta, explicabo molestiae quod.');
+INSERT INTO album.messages(email, `text`)VALUES('leo@gmail.com', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore eum beatae dicta, explicabo molestiae quod.');
+INSERT INTO album.messages(email, `text`)VALUES('leo@gmail.com', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore eum beatae dicta, explicabo molestiae quod.');
+INSERT INTO album.messages(email, `text`)VALUES('leo@gmail.com', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore eum beatae dicta, explicabo molestiae quod.');
+INSERT INTO album.messages(email, `text`)VALUES('leo@gmail.com', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore eum beatae dicta, explicabo molestiae quod.');
