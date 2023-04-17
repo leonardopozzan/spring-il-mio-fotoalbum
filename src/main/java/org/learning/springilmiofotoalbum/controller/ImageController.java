@@ -6,6 +6,8 @@ import org.learning.springilmiofotoalbum.exception.ImageNotFoundException;
 import org.learning.springilmiofotoalbum.model.AlertMessage;
 import org.learning.springilmiofotoalbum.model.AlertMessage.AlertMessageType;
 import org.learning.springilmiofotoalbum.model.Category;
+import org.learning.springilmiofotoalbum.model.IdsTransfer;
+import org.learning.springilmiofotoalbum.model.IdsTransfer.IdsTransferAction;
 import org.learning.springilmiofotoalbum.model.Image;
 import org.learning.springilmiofotoalbum.service.CategoryService;
 import org.learning.springilmiofotoalbum.service.ImageService;
@@ -46,56 +48,47 @@ public class ImageController {
     }
 
     @GetMapping("/{id}")
-    public String show(Model model,@PathVariable(name = "id") Integer imageId, @RequestParam(name="tryToAddCategory") Optional<Boolean> option, @RequestParam(name="categoryId") Optional<Integer> categoryId){
+    public String show(Model model,@PathVariable(name = "id") Integer imageId){
         try {
-            if(option.isPresent()){
-                if(categoryId.isPresent()){
-                    imageService.addCategoryToImage(imageId, categoryId.get());
-                    model.addAttribute("addCategory", false);
-                }else{
-                    model.addAttribute("addCategory", true);
-
-                }
-            }else{
-                model.addAttribute("addCategory", false);
-            }
             Image image = imageService.getById(imageId);
             model.addAttribute("image" , image);
             model.addAttribute("missingCategories" , categoryService.getMissingCategories(image));
+            model.addAttribute("idsTransfer", new IdsTransfer());
+            model.addAttribute("currentIdsTransfer", new IdsTransfer(IdsTransferAction.HIDEFORM));
+            return "images/show";
+        } catch (ImageNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + imageId + " non trovata");
+        }
+    }
+
+    @PostMapping("/{id}")
+    public String showAddCategory(Model model,@PathVariable(name = "id") Integer imageId,@Valid @ModelAttribute IdsTransfer idsTransfer, BindingResult bindingResult){
+        if(bindingResult.hasErrors() || idsTransfer.getIdsTransferAction().equals(IdsTransferAction.SHOWFORM)){
+            try {
+                Image image = imageService.getById(imageId);
+                model.addAttribute("image" , image);
+                model.addAttribute("idsTransfer", new IdsTransfer());
+                model.addAttribute("missingCategories" , categoryService.getMissingCategories(image));
+                model.addAttribute("currentIdsTransfer", new IdsTransfer(IdsTransferAction.SHOWFORM));
+                return "images/show";
+            } catch (ImageNotFoundException e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + imageId + " non trovata");
+            }
+        }
+
+        try {
+            Image image = imageService.addCategoryToImage(imageId, idsTransfer.getCategoryId());
+            model.addAttribute("image" , image);
+            model.addAttribute("idsTransfer", new IdsTransfer());
+            model.addAttribute("missingCategories" , categoryService.getMissingCategories(image));
+            model.addAttribute("currentIdsTransfer", new IdsTransfer(IdsTransferAction.HIDEFORM));
             return "images/show";
         } catch (ImageNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + imageId + " non trovata");
         }catch (CategoryNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "catgoria con id: " + categoryId.get() + " non trovata");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "catgoria con id: " + idsTransfer.getCategoryId() + " non trovata");
         }
     }
-
-//    @PostMapping("/{id}")
-//    public String showAddCategory(Model model,@PathVariable(name = "id") Integer imageId,@Valid @ModelAttribute Category category, BindingResult bindingResult){
-//        if(bindingResult.hasErrors()){
-//            try {
-//                Image image = imageService.getById(imageId);
-//                model.addAttribute("addCategory", true);
-//                model.addAttribute("category" , new Category());
-//                model.addAttribute("image" , image);
-//                model.addAttribute("missingCategories" , categoryService.getMissingCategories(image));
-//                return "images/show";
-//            } catch (ImageNotFoundException e){
-//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + imageId + " non trovata");
-//            }
-//        }
-//
-//        try {
-//            Image image = imageService.addCategoryToImage(imageId, category.getId());
-//            model.addAttribute("image" , image);
-//            model.addAttribute("addCategory", false);
-//            return "images/show";
-//        } catch (ImageNotFoundException e){
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "immagine con id: " + imageId + " non trovata");
-//        }catch (CategoryNotFoundException e){
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "catgoria con id: " + category.getId() + " non trovata");
-//        }
-//    }
 
     @GetMapping("/create")
     public String create(Model model){
