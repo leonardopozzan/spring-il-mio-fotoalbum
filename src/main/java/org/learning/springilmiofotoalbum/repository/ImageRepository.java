@@ -8,6 +8,10 @@ import java.util.Optional;
 
 public interface ImageRepository extends JpaRepository<Image, Integer> {
     List<Image> findByTitleContainingIgnoreCase(String title);
+
+    List<Image> findByVisibleTrue();
+
+    List<Image> findByVisibleTrueAndTitleContainingIgnoreCase(String title);
     boolean existsByTitleAndIdNot(String name, Integer id);
 
     boolean existsByTitle(String title);

@@ -4,7 +4,6 @@ import org.learning.springilmiofotoalbum.model.Image;
 import org.learning.springilmiofotoalbum.service.CategoryService;
 import org.learning.springilmiofotoalbum.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +23,9 @@ public class ImageRestController {
     @GetMapping("/images")
     public List<Image> images(@RequestParam(name= "title")Optional<String> search){
         if(search.isPresent())
-            return imageService.getFilteredImages(search.get());
-        return imageService.getAllImages();
+            return imageService.getVisibleImagesFiltered(search.get());
+        return imageService.getVisibleImages();
     }
+
+
 }

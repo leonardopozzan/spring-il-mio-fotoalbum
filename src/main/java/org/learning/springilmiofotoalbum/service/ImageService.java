@@ -81,4 +81,12 @@ public class ImageService {
             return false;
         }
     }
+
+    public List<Image> getVisibleImages() {
+        return imageRepository.findByVisibleTrue();
+    }
+
+    public List<Image> getVisibleImagesFiltered(String s) {
+        return imageRepository.findByVisibleTrueAndTitleContainingIgnoreCase(s);
+    }
 }

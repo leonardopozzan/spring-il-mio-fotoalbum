@@ -9,7 +9,7 @@
             </div>
             <ul class="links">
                 <li><router-link :to="{name: 'home'}">Home</router-link></li>
-                <li><router-link :to="{name: 'home'}">Invia un messaggio</router-link></li>
+                <li><router-link :to="{name: 'contact-us'}">Invia un messaggio</router-link></li>
             </ul>
         </div>
     </nav>
