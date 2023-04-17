@@ -29,7 +29,7 @@
             </div>
             <div class="col-9 my-3 d-flex align-items-center" >
                 <a th:if="${ missingCategories.size > 0}" th:href="@{|/images/${image.id}|(tryToAddCategory=true)}" class="btn btn-danger me-3"><i class="fa-solid fa-plus"></i></a>
-                <h4>Categorie:</h4>
+                <h4 class="me-5">Categorie:</h4>
                 <th:block th:if="${message}">
                     <div class="col-7 mb-2 alert alert-dismissible fade show" th:classAppend="${#strings.equals(message.type, 'SUCCESS')} ? alert-success : alert-danger">
                         <div th:text="${message.text}"></div>
@@ -53,7 +53,7 @@
                         <a class="btn btn-danger" th:href="@{|/images/${image.id}/remove/*{id}|}" ><i class="fa-solid fa-trash-can"></i></a>
                     </td>
                 </tr>
-                <tr th:if="${addCategory}">
+                <tr th:if="${addCategory && missingCategories.size > 0}">
                     <th></th>
                     <td>
                         <form th:action="@{|/images/${image.id}|}" method="get" class="d-flex" >
