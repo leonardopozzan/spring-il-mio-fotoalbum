@@ -19,8 +19,8 @@
                     <th>Messaggio</th>
                 </tr>
                 </thead>
-                <tbody th:each="element : ${messages}" th:object="${element}" >
-                <tr>
+                <tbody  >
+                <tr th:each="element : ${messages}" th:object="${element}">
                     <th th:text="*{id}"></th>
                     <td th:text="*{email}"></td>
                     <td th:text="*{text}"></td>

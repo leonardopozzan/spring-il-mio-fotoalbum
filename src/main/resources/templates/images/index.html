@@ -38,8 +38,8 @@
                     <th>Operazioni</th>
                 </tr>
                 </thead>
-                <tbody th:each="image : ${images}" th:object="${image}" >
-                <tr>
+                <tbody  >
+                <tr th:each="image : ${images}" th:object="${image}">
                     <th th:text="*{id}"></th>
                     <td th:text="*{title}"></td>
                     <td><img class="w-75" th:src="@{*{url}}" alt=""></td>

@@ -50,4 +50,9 @@ public class CategoryService {
             return false;
         }
     }
+
+    public List<Category> getMissingCategories(Image image) {
+        List<Integer> categoriesIds = image.getCategories().stream().map((element) -> element.getId()).toList();
+        return categoryRepository.findByIdNotIn(categoriesIds);
+    }
 }

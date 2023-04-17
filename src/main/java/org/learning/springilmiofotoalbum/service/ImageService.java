@@ -89,4 +89,21 @@ public class ImageService {
     public List<Image> getVisibleImagesFiltered(String s) {
         return imageRepository.findByVisibleTrueAndTitleContainingIgnoreCase(s);
     }
+
+    public Image addCategoryToImage(Integer imageId, Integer categoryId) {
+        Image imageToUpdate = imageRepository.findById(imageId).orElseThrow(ImageNotFoundException::new);
+        Category categoryToAdd = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        Set<Category> setOfCategories = new HashSet<>(imageToUpdate.getCategories());
+        setOfCategories.add(categoryToAdd);
+        List<Category> listOfCategories = new ArrayList<>(setOfCategories);
+        imageToUpdate.setCategories(listOfCategories);
+        return imageRepository.save(imageToUpdate);
+    }
+
+    public Image removeCategoryFromImage(Integer imageId, Integer categoryId) {
+        Image imageToUpdate = imageRepository.findById(imageId).orElseThrow(ImageNotFoundException::new);
+        Category categoryToRemove = categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        imageToUpdate.getCategories().remove(categoryToRemove);
+        return imageRepository.save(imageToUpdate);
+    }
 }

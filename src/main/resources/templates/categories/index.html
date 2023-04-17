@@ -37,8 +37,8 @@
                     <th>Operazioni</th>
                 </tr>
                 </thead>
-                <tbody th:each="element : ${categories}" th:object="${element}" >
-                <tr>
+                <tbody  >
+                <tr th:each="element : ${categories}" th:object="${element}">
                     <th th:text="*{id}"></th>
                     <td th:unless="${edit}" th:text="*{name}"></td>
                     <td th:if="${edit}">
